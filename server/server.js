@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const Twit = require("twit");
-var qs = require("qs");
 
 const dotenv = require("dotenv");
 dotenv.config();
