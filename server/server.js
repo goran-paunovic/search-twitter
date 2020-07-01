@@ -43,14 +43,32 @@ app.get("/search", function (req, res) {
   }
 });
 
+app.get("/user", function (req, res) {
+  if (!req.query.id || !req.query.scrname) {
+    res.status(400);
+    res.json({ message: "Query parameters are missing." });
+  } else {
+    const params = {
+      user_id: req.query.id ? `${req.query.id}` : "",
+      screen_name: req.query.scrname ? `${req.query.scrname}` : "",
+    };
+
+    T.get("users/show", params, function (err, data, response) {
+      if (err) {
+        res.status(err.statusCode);
+      } else {
+        res.status(200);
+      }
+      res.json(data);
+    });
+  }
+});
+
 const port = process.env.PORT || 4000;
 
 var server = app.listen(port, function () {
   var host = server.address().address;
   var port = server.address().port;
 
-  console.log(
-    "Twitter search API listening at http://localhost:%s/search",
-    port
-  );
+  console.log("Twitter search API listening at http://localhost:%s", port);
 });

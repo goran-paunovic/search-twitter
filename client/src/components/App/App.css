@@ -19,3 +19,37 @@
   min-height: 100%;
   height: 100%;
 }
+
+/*
+  Common styles
+*/
+.page-container {
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.content {
+  padding: 8px;
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  overflow: auto;
+  margin-top: 48px;
+}
+
+.full-page-spinner {
+  position: absolute !important;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.5);
+}

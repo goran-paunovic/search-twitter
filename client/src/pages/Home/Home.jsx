@@ -144,7 +144,7 @@ export const Home = () => {
         />
       </div>
 
-      <div className="home" ref={scrollDivRef}>
+      <div className="content" ref={scrollDivRef}>
         <InfiniteScroll
           initialLoad={false}
           pageStart={0}
@@ -171,7 +171,12 @@ export const Home = () => {
                 <List.Item.Meta
                   avatar={
                     <Link
-                      to={`user/${item.user.id}`}
+                      to={{
+                        pathname: `user/${item.user.id}`,
+                        state: {
+                          user: item.user,
+                        },
+                      }}
                       onClick={handleAvatarClick}
                     >
                       <Avatar src={item.user.profile_image_url} />
