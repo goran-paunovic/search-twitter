@@ -1,3 +1,11 @@
+.page-header {
+  padding: 8px !important;
+  background-color: whitesmoke !important;
+  box-shadow: 0 0 5px 1px darkgray;
+  z-index: 1;
+  width: 100%;
+  padding: 8px;
+}
 .ant-page-header-back {
   margin-right: 16px;
   margin-left: 16px;
@@ -15,4 +23,7 @@
 }
 .ant-card-meta-detail > div:not(:last-child) {
   margin-bottom: 0 !important;
+}
+.ant-card-cover img {
+  border-radius: 0 !important;
 }

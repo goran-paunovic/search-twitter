@@ -45,6 +45,7 @@ const reducer = (state, action) => {
           term: "",
           tweets: [],
           max_id: null,
+          hasMore: false,
         },
       };
     case SEARCH_START:
@@ -60,6 +61,10 @@ const reducer = (state, action) => {
           ...state.home,
           tweets: action.payload.tweets,
           max_id: action.payload.max_id,
+          hasMore:
+            action.payload.max_id === null || action.payload.max_id === ""
+              ? false
+              : true,
         },
       };
     case SEARCH_MORE_SUCCESS:
@@ -68,6 +73,10 @@ const reducer = (state, action) => {
           ...state.home,
           tweets: [...state.home.tweets, ...action.payload.tweets],
           max_id: action.payload.max_id,
+          hasMore:
+            action.payload.max_id === null || action.payload.max_id === ""
+              ? false
+              : true,
         },
       };
     case SEARCH_END:

@@ -1,0 +1,53 @@
+.banner-outer-wrapper {
+  align-items: stretch;
+  border: 0px solid black;
+  box-sizing: border-box;
+  display: flex;
+  flex-basis: auto;
+  flex-direction: column;
+  flex-shrink: 0;
+  margin: 0px;
+  min-height: 0px;
+  min-width: 0px;
+  padding: 0px;
+  position: relative;
+  z-index: 0;
+}
+
+.banner-wrapper {
+  flex-basis: auto;
+  flex-direction: column;
+  flex-shrink: 0;
+  margin: 0px;
+  min-height: 0px;
+  min-width: 0px;
+  padding: 0px;
+  position: relative;
+  z-index: 0;
+  background: lightgray;
+  overflow: hidden;
+}
+
+.banner-fill {
+  padding-bottom: 33%;
+  width: 100%;
+}
+
+.banner-inner-wrapper {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+}
+
+.banner-image {
+  inset: 0px;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}

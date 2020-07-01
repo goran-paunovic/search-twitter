@@ -1,10 +1,9 @@
 .search-bar {
   width: 100%;
   padding: 8px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   background-color: whitesmoke;
   box-shadow: 0 0 5px 1px lightgrey;
+}
+.search-bar .ant-input-search {
+  height: 40px;
 }

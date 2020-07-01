@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Input, List, Avatar, Spin, Empty } from "antd";
-import { NumberOutlined, TwitterCircleFilled } from "@ant-design/icons";
+import { Input, Spin } from "antd";
+import { NumberOutlined } from "@ant-design/icons";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroller";
 
+import { TweetList } from "../../components/TweetList/TweetList";
 import { getUrlParameter } from "../../util/getUrlParameter";
 import {
   useStore,
@@ -147,53 +147,13 @@ export const Home = () => {
       <div className="content" ref={scrollDivRef}>
         <InfiniteScroll
           initialLoad={false}
-          pageStart={0}
           loadMore={handleInfiniteLoadMore}
           hasMore={!state.home.loading && state.home.hasMore}
           useWindow={false}
         >
-          <List
-            locale={{
-              emptyText: (
-                <Empty
-                  description="Let's find that tweet"
-                  image={
-                    <TwitterCircleFilled
-                      style={{ width: 96, height: 96, fontSize: "96px" }}
-                    />
-                  }
-                />
-              ),
-            }}
-            dataSource={state.home.tweets}
-            renderItem={(item) => (
-              <List.Item key={item.id}>
-                <List.Item.Meta
-                  avatar={
-                    <Link
-                      to={{
-                        pathname: `user/${item.user.id}`,
-                        state: {
-                          user: item.user,
-                        },
-                      }}
-                      onClick={handleAvatarClick}
-                    >
-                      <Avatar src={item.user.profile_image_url} />
-                    </Link>
-                  }
-                  title={`@${item.user.screen_name} (${item.user.name})`}
-                  description={
-                    <div>
-                      <div>{item.text}</div>
-                      <div>
-                        {item.entities.hashtags.map((tag) => `#${tag.text} `)}
-                      </div>
-                    </div>
-                  }
-                />
-              </List.Item>
-            )}
+          <TweetList
+            tweets={state.home.tweets}
+            onAvatarClick={handleAvatarClick}
           />
         </InfiniteScroll>
 
