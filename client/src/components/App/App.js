@@ -5,14 +5,14 @@ import { Home } from "../../pages/Home/Home";
 import { UserDetails } from "../../pages/UserDetails/UserDetails";
 import { Error404 } from "../../pages/Error404/Error404";
 
-import { AppProvider } from "../AppContext/AppContext";
+import { StoreProvider } from "../../store/store";
 
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <AppProvider>
+      <StoreProvider>
         <Router>
           <Switch>
             <Route exact path="/">
@@ -26,7 +26,7 @@ function App() {
             </Route>
           </Switch>
         </Router>
-      </AppProvider>
+      </StoreProvider>
     </div>
   );
 }
