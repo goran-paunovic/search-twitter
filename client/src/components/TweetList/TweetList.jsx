@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { List, Avatar, Empty } from "antd";
+import { List, Avatar, Empty, Typography } from "antd";
 import { TwitterCircleFilled } from "@ant-design/icons";
+import { getTimeFromNow } from "../../util/getTimeFromNow";
+
+const { Text } = Typography;
 
 export const TweetList = ({ tweets, onAvatarClick }) => {
   return (
@@ -36,7 +39,26 @@ export const TweetList = ({ tweets, onAvatarClick }) => {
                 <Avatar src={item.user.profile_image_url} />
               </Link>
             }
-            title={`@${item.user.screen_name} (${item.user.name})`}
+            title={
+              <>
+                <Text
+                  strong
+                  style={{
+                    fontSize: 14,
+                    marginRight: 8,
+                  }}
+                >
+                  {item.user.name}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                  }}
+                >{`@${item.user.screen_name}`}</Text>
+                {" - "}
+                <Text>{getTimeFromNow(item.created_at)}</Text>
+              </>
+            }
             description={
               <div>
                 <div>{item.text}</div>

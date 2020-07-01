@@ -8,6 +8,7 @@ import { formatTweetCount } from "../../util/formatTweetCount";
 import { getUrlParameter } from "../../util/getUrlParameter";
 
 import "./UserDetails.css";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 export const UserDetails = () => {
   const history = useHistory();
@@ -15,9 +16,10 @@ export const UserDetails = () => {
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({
-    name: "User name",
-    screen_name: "screen name",
+    name: "User details",
+    screen_name: "user screen name",
   });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (location.state && location.state.user) {
@@ -41,12 +43,14 @@ export const UserDetails = () => {
         .then((response) => {
           console.log("Response", response);
           setUser(response.data);
+          setError(null);
 
           setTimeout(setLoading(false), 0);
         })
         .catch((error) => {
           console.log("Error", error);
 
+          setError(error);
           setTimeout(setLoading(false), 0);
         });
     }
@@ -66,8 +70,12 @@ export const UserDetails = () => {
       />
 
       <div className="content">
-        <div className="user-details">
-          <UserDetailsCard user={user} />
+        <div className="user-details-wrapper">
+          {error ? (
+            <ErrorMessage error={error} />
+          ) : (
+            <UserDetailsCard user={user} />
+          )}
         </div>
       </div>
 

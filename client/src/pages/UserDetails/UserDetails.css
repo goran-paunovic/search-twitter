@@ -24,6 +24,14 @@
 .ant-card-meta-detail > div:not(:last-child) {
   margin-bottom: 0 !important;
 }
+.ant-card-cover {
+  margin: 0 !important;
+}
 .ant-card-cover img {
   border-radius: 0 !important;
+}
+
+.user-details-wrapper {
+  display: flex;
+  justify-content: center;
 }

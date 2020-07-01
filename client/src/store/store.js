@@ -46,6 +46,7 @@ const reducer = (state, action) => {
           tweets: [],
           max_id: null,
           hasMore: false,
+          error: null,
         },
       };
     case SEARCH_START:
@@ -59,6 +60,7 @@ const reducer = (state, action) => {
       return {
         home: {
           ...state.home,
+          error: null,
           tweets: action.payload.tweets,
           max_id: action.payload.max_id,
           hasMore:
@@ -71,6 +73,7 @@ const reducer = (state, action) => {
       return {
         home: {
           ...state.home,
+          error: null,
           tweets: [...state.home.tweets, ...action.payload.tweets],
           max_id: action.payload.max_id,
           hasMore:

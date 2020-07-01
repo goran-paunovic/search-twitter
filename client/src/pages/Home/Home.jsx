@@ -19,6 +19,7 @@ import {
 } from "../../store/store";
 
 import "./Home.css";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const { Search } = Input;
 
@@ -145,17 +146,21 @@ export const Home = () => {
       </div>
 
       <div className="content" ref={scrollDivRef}>
-        <InfiniteScroll
-          initialLoad={false}
-          loadMore={handleInfiniteLoadMore}
-          hasMore={!state.home.loading && state.home.hasMore}
-          useWindow={false}
-        >
-          <TweetList
-            tweets={state.home.tweets}
-            onAvatarClick={handleAvatarClick}
-          />
-        </InfiniteScroll>
+        {state.home.error ? (
+          <ErrorMessage error={state.home.error} />
+        ) : (
+          <InfiniteScroll
+            initialLoad={false}
+            loadMore={handleInfiniteLoadMore}
+            hasMore={!state.home.loading && state.home.hasMore}
+            useWindow={false}
+          >
+            <TweetList
+              tweets={state.home.tweets}
+              onAvatarClick={handleAvatarClick}
+            />
+          </InfiniteScroll>
+        )}
 
         {state.home.loading && state.home.hasMore && (
           <Spin className="full-page-spinner" tip="Loading..." />
