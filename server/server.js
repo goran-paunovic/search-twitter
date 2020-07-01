@@ -3,16 +3,10 @@ const cors = require("cors");
 const Twit = require("twit");
 
 const dotenv = require("dotenv");
+
 dotenv.config();
 
-const T = new Twit({
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  app_only_auth: true,
-});
-
 const app = express();
-const port = process.env.PORT || 4000;
 
 app.use(
   cors({
@@ -20,6 +14,12 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
+
+const T = new Twit({
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  app_only_auth: true,
+});
 
 app.get("/search", function (req, res) {
   if (!req.query.q) {
@@ -42,6 +42,8 @@ app.get("/search", function (req, res) {
     });
   }
 });
+
+const port = process.env.PORT || 4000;
 
 var server = app.listen(port, function () {
   var host = server.address().address;

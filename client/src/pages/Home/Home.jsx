@@ -1,119 +1,155 @@
-import React, { useState, useContext } from "react";
+import React, { useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Input, List, Avatar, Spin, Empty } from "antd";
-import { TwitterOutlined, TwitterCircleFilled } from "@ant-design/icons";
+import { NumberOutlined, TwitterCircleFilled } from "@ant-design/icons";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroller";
-import { getUrlParameter } from "../../util/getUrlParameter";
-import { Link } from "react-router-dom";
-import { AppContext } from "../../components/AppContext/AppContext";
 
-const TWITTER_SEARCH_URL = "http://localhost:4000/search";
+import { getUrlParameter } from "../../util/getUrlParameter";
+import {
+  useStore,
+  SET_SCROLL_POSITION,
+  SEARCH_TERM_CHANGED,
+  SEARCH_TERM_CLEARED,
+  SEARCH_START,
+  SEARCH_END,
+  SEARCH_SUCCESS,
+  SEARCH_MORE_SUCCESS,
+  SEARCH_ERROR,
+} from "../../store/store";
+
+import "./Home.css";
 
 const { Search } = Input;
 
 export const Home = () => {
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [term, setTerm] = useState("");
-  const [tweets, setTweets] = useState([]);
-  const [maxID, setMaxID] = useState();
-  const { home } = useContext(AppContext);
+  const { state, dispatch } = useStore();
+  const scrollDivRef = useRef(null);
+
+  useEffect(() => {
+    scrollDivRef.current.scrollTop = state.home.scrollTop;
+  }, [state.home.scrollTop]);
 
   const handleTermChange = (e) => {
-    setTerm(e.target.value);
+    dispatch({
+      type: SEARCH_TERM_CHANGED,
+      payload: { term: e.target.value },
+    });
   };
 
   const handleSearch = (value) => {
     if (value === "") {
       // Clear button is clicked
-      setTerm(value);
-      setTweets([]);
+      dispatch({
+        type: SEARCH_TERM_CLEARED,
+      });
     } else {
-      setLoading(true);
+      dispatch({
+        type: SEARCH_START,
+      });
 
       // User clicked search button or pressed Enter
       axios
-        .get(TWITTER_SEARCH_URL, {
+        .get(process.env.REACT_APP_TWITTER_SEARCH_URL, {
           params: {
             q: value,
           },
         })
         .then((response) => {
-          setTimeout(() => setLoading(false), 0);
+          dispatch({
+            type: SEARCH_SUCCESS,
+            payload: {
+              tweets: [...response.data.statuses],
+              max_id: getUrlParameter(
+                response.data.search_metadata.next_results,
+                "max_id"
+              ),
+            },
+          });
 
-          setTweets([...response.data.statuses]);
-
-          const max_id = getUrlParameter(
-            response.data.search_metadata.next_results,
-            "max_id"
-          );
-          setMaxID(max_id);
+          dispatch({
+            type: SEARCH_END,
+          });
+        })
+        .catch((error) => {
+          dispatch({
+            type: SEARCH_ERROR,
+            payload: {
+              error,
+            },
+          });
         });
     }
   };
 
   const handleInfiniteLoadMore = () => {
-    console.log("handleInfiniteLoadMore");
-    setLoading(true);
+    dispatch({
+      type: SEARCH_START,
+    });
 
     // User clicked search button or pressed Enter
     axios
-      .get(TWITTER_SEARCH_URL, {
+      .get(process.env.REACT_APP_TWITTER_SEARCH_URL, {
         params: {
-          q: term,
-          max_id: maxID,
+          q: state.home.term,
+          max_id: state.home.max_id,
         },
       })
       .then((response) => {
-        setTimeout(() => setLoading(false), 0);
+        dispatch({
+          type: SEARCH_MORE_SUCCESS,
+          payload: {
+            tweets: [...response.data.statuses],
+            max_id: getUrlParameter(
+              response.data.search_metadata.next_results,
+              "max_id"
+            ),
+          },
+        });
 
-        setTweets((prev) => [...prev, ...response.data.statuses]);
-
-        const max_id = getUrlParameter(
-          response.data.search_metadata.next_results,
-          "max_id"
-        );
-        setMaxID(max_id);
+        dispatch({
+          type: SEARCH_END,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: SEARCH_ERROR,
+          payload: {
+            error,
+          },
+        });
       });
   };
 
+  const handleAvatarClick = () => {
+    dispatch({
+      type: SET_SCROLL_POSITION,
+      payload: {
+        scrollTop: scrollDivRef.current.scrollTop,
+      },
+    });
+  };
+
   return (
-    <div
-      className="page-container"
-      style={{
-        width: "100%",
-        minHeight: "100%",
-        height: "100%",
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
-      <div
-        className="home"
-        style={{
-          padding: 8,
-          width: "100%",
-          minHeight: "100%",
-          height: "100%",
-          overflow: "auto",
-        }}
-      >
+    <div className="page-container">
+      <div className="search-bar">
         <Search
           allowClear
           autoFocus={true}
           placeholder="Search by hashtag"
-          prefix={<TwitterOutlined />}
-          value={term}
+          prefix={<NumberOutlined style={{ transform: "skewX(-10deg)" }} />}
+          value={state.home.term}
           onChange={handleTermChange}
           onSearch={handleSearch}
-          style={{ width: "100%" }}
         />
+      </div>
 
+      <div className="home" ref={scrollDivRef}>
         <InfiniteScroll
           initialLoad={false}
           pageStart={0}
           loadMore={handleInfiniteLoadMore}
-          hasMore={!loading && hasMore}
+          hasMore={!state.home.loading && state.home.hasMore}
           useWindow={false}
         >
           <List
@@ -129,12 +165,15 @@ export const Home = () => {
                 />
               ),
             }}
-            dataSource={tweets}
+            dataSource={state.home.tweets}
             renderItem={(item) => (
               <List.Item key={item.id}>
                 <List.Item.Meta
                   avatar={
-                    <Link to={`user/${item.user.id}`}>
+                    <Link
+                      to={`user/${item.user.id}`}
+                      onClick={handleAvatarClick}
+                    >
                       <Avatar src={item.user.profile_image_url} />
                     </Link>
                   }
@@ -153,23 +192,8 @@ export const Home = () => {
           />
         </InfiniteScroll>
 
-        {loading && hasMore && (
-          <Spin
-            tip="Loading..."
-            style={{
-              position: "absolute",
-              zIndex: 5,
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "rgba(255, 255, 255, 0.5)",
-            }}
-          />
+        {state.home.loading && state.home.hasMore && (
+          <Spin className="full-page-spinner" tip="Loading..." />
         )}
       </div>
     </div>
