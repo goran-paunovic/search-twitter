@@ -5,7 +5,7 @@ import { Home } from "../../pages/Home/Home";
 import { UserDetails } from "../../pages/UserDetails/UserDetails";
 import { Error404 } from "../../pages/Error404/Error404";
 
-import { StoreProvider } from "../../store/store";
+import StoreProvider from "../../store/Provider";
 
 import "./App.css";
 

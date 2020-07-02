@@ -6,20 +6,11 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import { TweetList } from "../../components/TweetList/TweetList";
 import { getUrlParameter } from "../../util/getUrlParameter";
-import {
-  useStore,
-  SET_SCROLL_POSITION,
-  SEARCH_TERM_CHANGED,
-  SEARCH_TERM_CLEARED,
-  SEARCH_START,
-  SEARCH_END,
-  SEARCH_SUCCESS,
-  SEARCH_MORE_SUCCESS,
-  SEARCH_ERROR,
-} from "../../store/store";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import { useStore } from "../../store/useStore";
+import { Actions } from "../../store/home";
 
 import "./Home.css";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const { Search } = Input;
 
@@ -33,20 +24,21 @@ export const Home = () => {
 
   const handleTermChange = (e) => {
     dispatch({
-      type: SEARCH_TERM_CHANGED,
+      type: Actions.SEARCH_TERM_CHANGED,
       payload: { term: e.target.value },
     });
   };
 
   const handleSearch = (value) => {
+    console.log("VALUE", value);
     if (value === "") {
       // Clear button is clicked
       dispatch({
-        type: SEARCH_TERM_CLEARED,
+        type: Actions.SEARCH_TERM_CLEARED,
       });
     } else {
       dispatch({
-        type: SEARCH_START,
+        type: Actions.SEARCH_START,
       });
 
       // User clicked search button or pressed Enter
@@ -58,7 +50,7 @@ export const Home = () => {
         })
         .then((response) => {
           dispatch({
-            type: SEARCH_SUCCESS,
+            type: Actions.SEARCH_SUCCESS,
             payload: {
               tweets: [...response.data.statuses],
               max_id: getUrlParameter(
@@ -69,12 +61,12 @@ export const Home = () => {
           });
 
           dispatch({
-            type: SEARCH_END,
+            type: Actions.SEARCH_END,
           });
         })
         .catch((error) => {
           dispatch({
-            type: SEARCH_ERROR,
+            type: Actions.SEARCH_ERROR,
             payload: {
               error,
             },
@@ -84,8 +76,10 @@ export const Home = () => {
   };
 
   const handleInfiniteLoadMore = () => {
+    if (!state.home.term) return;
+
     dispatch({
-      type: SEARCH_START,
+      type: Actions.SEARCH_START,
     });
 
     // User clicked search button or pressed Enter
@@ -98,7 +92,7 @@ export const Home = () => {
       })
       .then((response) => {
         dispatch({
-          type: SEARCH_MORE_SUCCESS,
+          type: Actions.SEARCH_MORE_SUCCESS,
           payload: {
             tweets: [...response.data.statuses],
             max_id: getUrlParameter(
@@ -109,12 +103,12 @@ export const Home = () => {
         });
 
         dispatch({
-          type: SEARCH_END,
+          type: Actions.SEARCH_END,
         });
       })
       .catch((error) => {
         dispatch({
-          type: SEARCH_ERROR,
+          type: Actions.SEARCH_ERROR,
           payload: {
             error,
           },
@@ -124,7 +118,7 @@ export const Home = () => {
 
   const handleAvatarClick = () => {
     dispatch({
-      type: SET_SCROLL_POSITION,
+      type: Actions.SET_SCROLL_POSITION,
       payload: {
         scrollTop: scrollDivRef.current.scrollTop,
       },
@@ -162,7 +156,7 @@ export const Home = () => {
           </InfiniteScroll>
         )}
 
-        {state.home.loading && state.home.hasMore && (
+        {state.home.loading && (
           <Spin className="full-page-spinner" tip="Loading..." />
         )}
       </div>
