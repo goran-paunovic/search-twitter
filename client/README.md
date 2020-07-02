@@ -2,9 +2,9 @@
 
 If you are running on your localhost, create .env file next to package.json file with next two lines:
 
-REACT_APP_TWITTER_SEARCH_URL="http://localhost:4000/search"
+REACT_APP_TWITTER_SEARCH_URL=http://localhost:4000/search
 
-REACT_APP_TWITTER_GET_USER_URL="http://localhost:4000/user"
+REACT_APP_TWITTER_GET_USER_URL=http://localhost:4000/user
 
 If you deployed server elsewhere, change the variables to match your server url.
 
