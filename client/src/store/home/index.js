@@ -14,7 +14,6 @@ export const Actions = {
   SEARCH_SUCCESS: "SEARCH_SUCCESS",
   SEARCH_MORE_SUCCESS: "SEARCH_MORE_SUCCESS",
   SEARCH_ERROR: "SEARCH_ERROR",
-  SEARCH_END: "SEARCH_END",
   SEARCH_TERM_CHANGED: "SEARCH_TERM_CHANGED",
   SEARCH_TERM_CLEARED: "SEARCH_TERM_CLEARED",
 };
@@ -55,6 +54,7 @@ export const reducer = (state, action) => {
           action.payload.max_id === null || action.payload.max_id === ""
             ? false
             : true,
+        loading: false,
       };
     case Actions.SEARCH_MORE_SUCCESS:
       return {
@@ -67,11 +67,7 @@ export const reducer = (state, action) => {
             ? false
             : true,
       };
-    case Actions.SEARCH_END:
-      return {
-        ...state,
-        loading: false,
-      };
+
     case Actions.SEARCH_ERROR:
       return {
         ...state,

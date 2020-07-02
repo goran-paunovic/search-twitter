@@ -12,35 +12,55 @@ import { Actions } from "../../store/home";
 
 import "./Home.css";
 
+const WAIT_INTERVAL = 500;
+
 const { Search } = Input;
 
 export const Home = () => {
   const { state, dispatch } = useStore();
   const scrollDivRef = useRef(null);
+  const timer = useRef(null);
 
   useEffect(() => {
+    // Restore scroll position
     scrollDivRef.current.scrollTop = state.home.scrollTop;
   }, [state.home.scrollTop]);
 
   const handleTermChange = (e) => {
+    // Clear interval if user is still typing
+    clearTimeout(timer.current);
+
+    const newTerm = e.target.value;
     dispatch({
       type: Actions.SEARCH_TERM_CHANGED,
-      payload: { term: e.target.value },
+      payload: { term: newTerm },
     });
+
+    // Set timer again
+    timer.current = setTimeout(() => {
+      if (newTerm.length > 2) {
+        // Call search after WAIT_INTERVAL ms if 3 or more characters are entered
+        handleSearch(newTerm);
+      }
+    }, WAIT_INTERVAL);
   };
 
   const handleSearch = (value) => {
+    console.log("handleSearch");
     if (value === "") {
       // Clear button is clicked
       dispatch({
         type: Actions.SEARCH_TERM_CLEARED,
       });
     } else {
+      // Clear timeout if this search is triggered by user pressing enter key
+      clearTimeout(timer.current);
+
       dispatch({
         type: Actions.SEARCH_START,
       });
 
-      // User clicked search button or pressed Enter
+      // Search tweets
       axios
         .get(process.env.REACT_APP_TWITTER_SEARCH_URL, {
           params: {
@@ -57,10 +77,6 @@ export const Home = () => {
                 "max_id"
               ),
             },
-          });
-
-          dispatch({
-            type: Actions.SEARCH_END,
           });
         })
         .catch((error) => {
