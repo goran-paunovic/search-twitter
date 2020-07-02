@@ -12,7 +12,6 @@ export const Actions = {
   FETCH_USER_START: "FETCH_USER_START",
   FETCH_USER_SUCCESS: "FETCH_USER_SUCCESS",
   FETCH_USER_ERROR: "FETCH_USER_ERROR",
-  FETCH_USER_END: "FETCH_USER_END",
 };
 
 export const reducer = (state, action) => {
@@ -27,13 +26,9 @@ export const reducer = (state, action) => {
         ...state,
         error: null,
         user: action.payload.user,
-      };
-
-    case Actions.FETCH_USER_END:
-      return {
-        ...state,
         loading: false,
       };
+
     case Actions.FETCH_USER_ERROR:
       return {
         ...state,

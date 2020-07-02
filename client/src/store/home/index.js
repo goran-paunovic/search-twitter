@@ -66,6 +66,7 @@ export const reducer = (state, action) => {
           action.payload.max_id === null || action.payload.max_id === ""
             ? false
             : true,
+        loading: false,
       };
 
     case Actions.SEARCH_ERROR:

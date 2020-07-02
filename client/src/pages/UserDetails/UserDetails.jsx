@@ -43,22 +43,29 @@ export const UserDetails = () => {
             type: Actions.FETCH_USER_SUCCESS,
             payload: { user: response.data },
           });
-
-          dispatch({ type: Actions.FETCH_USER_END });
         })
         .catch((error) => {
-          console.log("Error", error);
-
           dispatch({ type: Actions.FETCH_USER_ERROR, payload: { error } });
         });
     }
   }, [location.search, location.state, dispatch]);
 
+  const handleBackClick = () => {
+    if (location.state) {
+      // If location has state it's the signal that we came here
+      // from home page by clicking on user's avatar.
+      history.goBack();
+    } else {
+      // We are here because user typed the url of the user's profile page
+      history.push("/");
+    }
+  };
+
   return (
     <div className="page-container">
       <PageHeader
         className="page-header"
-        onBack={() => history.goBack()}
+        onBack={handleBackClick}
         title={state.userDetails.user.name}
         subTitle={
           state.userDetails.user.statuses_count

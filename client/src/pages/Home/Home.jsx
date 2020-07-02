@@ -46,7 +46,6 @@ export const Home = () => {
   };
 
   const handleSearch = (value) => {
-    console.log("handleSearch");
     if (value === "") {
       // Clear button is clicked
       dispatch({
