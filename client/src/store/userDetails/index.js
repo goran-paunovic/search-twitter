@@ -18,13 +18,11 @@ export const Actions = {
 export const reducer = (state, action) => {
   switch (action.type) {
     case Actions.FETCH_USER_START:
-      console.log("FETCH_USER_START");
       return {
         ...state,
         loading: true,
       };
     case Actions.FETCH_USER_SUCCESS:
-      console.log("FETCH_USER_SUCCESS");
       return {
         ...state,
         error: null,
@@ -32,13 +30,11 @@ export const reducer = (state, action) => {
       };
 
     case Actions.FETCH_USER_END:
-      console.log("FETCH_USER_END");
       return {
         ...state,
         loading: false,
       };
     case Actions.FETCH_USER_ERROR:
-      console.log("FETCH_USER_ERROR");
       return {
         ...state,
         error: action.payload.error,

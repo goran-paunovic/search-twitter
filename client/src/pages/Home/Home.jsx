@@ -30,7 +30,6 @@ export const Home = () => {
   };
 
   const handleSearch = (value) => {
-    console.log("VALUE", value);
     if (value === "") {
       // Clear button is clicked
       dispatch({

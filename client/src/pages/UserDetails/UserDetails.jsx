@@ -20,13 +20,11 @@ export const UserDetails = () => {
 
   useEffect(() => {
     if (location.state && location.state.user) {
-      console.log("userEffect dispatch(Actions.FETCH_USER_SUCCESS");
       dispatch({
         type: Actions.FETCH_USER_SUCCESS,
         payload: { user: { ...location.state.user } },
       });
     } else {
-      console.log("userEffect dispatch(Actions.FETCH_USER_START");
       dispatch({ type: Actions.FETCH_USER_START });
 
       const user_id = getUrlParameter(location.search, "id");

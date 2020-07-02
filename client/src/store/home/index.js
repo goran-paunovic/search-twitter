@@ -32,7 +32,6 @@ export const reducer = (state, action) => {
         term: action.payload.term,
       };
     case Actions.SEARCH_TERM_CLEARED:
-      console.log("ACTION SEARCH_TERM_CLEARED");
       return {
         ...state,
         term: "",
@@ -42,13 +41,11 @@ export const reducer = (state, action) => {
         error: null,
       };
     case Actions.SEARCH_START:
-      console.log("ACTION SEARCH_START");
       return {
         ...state,
         loading: true,
       };
     case Actions.SEARCH_SUCCESS:
-      console.log("ACTION SEARCH_SUCCESS");
       return {
         ...state,
         error: null,
@@ -71,13 +68,11 @@ export const reducer = (state, action) => {
             : true,
       };
     case Actions.SEARCH_END:
-      console.log("ACTION SEARCH_END");
       return {
         ...state,
         loading: false,
       };
     case Actions.SEARCH_ERROR:
-      console.log("ACTION SEARCH_ERROR");
       return {
         ...state,
         error: action.payload.error,

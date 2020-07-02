@@ -7,3 +7,7 @@
 .search-bar .ant-input-search {
   height: 40px;
 }
+
+.search-bar .anticon-search {
+  width: 40px;
+}
