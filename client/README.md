@@ -1,4 +1,15 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Environment variables
+
+If you are running on your localhost, create .env file next to package.json file with next two lines:
+
+REACT_APP_TWITTER_SEARCH_URL="http://localhost:4000/search"
+REACT_APP_TWITTER_GET_USER_URL="http://localhost:4000/user"
+
+If you deployed server elsewhere, change the variables to match your server url.
+
+## Install dependencies
+
+npm install
 
 ## Available Scripts
 
