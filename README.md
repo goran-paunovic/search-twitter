@@ -1,4 +1,4 @@
-# Twitter explorer
+# Twitter API demo
 
 Demo react &amp; node.js app
 
