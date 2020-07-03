@@ -1,4 +1,4 @@
-## Twitter API demo
+# Twitter API demo
 
 Demo react &amp; node.js app
 
@@ -10,6 +10,6 @@ Node.js server.
 
 React client app.
 
-# Where can I see this app running
+## Where can I see this app running
 
 https://nameless-peak-80005.herokuapp.com/
