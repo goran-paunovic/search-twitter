@@ -2,7 +2,7 @@
 
 Node.js server application.
 
-Server is needed cause Twitter API do not send the Access-Control-Allow-Origin in their response headers.
+Server is needed because Twitter API do not send the Access-Control-Allow-Origin in their response headers.
 
 # Environment variables
 
