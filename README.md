@@ -10,6 +10,3 @@ Node.js server.
 
 React client app.
 
-## Where can I see this app running
-
-https://nameless-peak-80005.herokuapp.com/
